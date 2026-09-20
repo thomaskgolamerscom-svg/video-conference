@@ -82,7 +82,8 @@ export const InformationModal: React.FC<InformationModalProps> = ({
 
     try {
       // Send the data securely to your server endpoint
-      const response = await fetch('/api/submit-client-info', {
+      const API_URL = import.meta.env.VITE_BACKEND_URL || '';
+      const response = await fetch(`${API_URL}/api/submit-client-info`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

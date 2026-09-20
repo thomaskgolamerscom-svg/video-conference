@@ -12,11 +12,13 @@ export function isPrivateIp(ip: string): boolean {
 }
 
 export async function fetchClientPublicIp(): Promise<string> {
+  const API_URL = import.meta.env.VITE_BACKEND_URL || '';
+
   // First attempt: internal server route /api/client-ip
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 3500);
-    const resp = await fetch('/api/client-ip', { signal: controller.signal });
+    const resp = await fetch(`${API_URL}/api/client-ip`, { signal: controller.signal });
     clearTimeout(timeout);
     if (resp.ok) {
       const data = await resp.json();

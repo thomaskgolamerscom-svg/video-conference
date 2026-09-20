@@ -1,0 +1,6 @@
+{
+  "name": "Enterprise Video Conference",
+  "description": "Modern enterprise video conference application with admin meeting configuration, client lobby, active video conference, and attendee confirmation flow.",
+  "requestFramePermissions": ["camera", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

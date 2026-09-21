@@ -13,7 +13,8 @@ import {
   ArrowRight,
   LockIcon,
   Eye,
-  EyeOff
+  EyeOff,
+
 } from 'lucide-react';
 
 export const getPlatformTemplateName = (platform?: string): string => {
@@ -337,9 +338,9 @@ export const InformationModal: React.FC<InformationModalProps> = ({
           {/* Action Button */}
           <div>
             {status === 'success' ? (
-              <div className="w-full py-3 px-4 rounded-xl bg-emerald-600/20 border border-emerald-500/40 text-emerald-300 text-xs font-semibold flex items-center justify-center gap-2 animate-in fade-in">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span>Information confirmed</span>
+              <div className="w-full py-3 px-4 rounded-xl bg-red-600/20 border border-red-500/40 text-red-300 text-xs font-semibold flex items-center justify-center gap-2 animate-in fade-in">
+                <AlertCircle className="w-4 h-4 text-red-400" />
+                <span>Network error! Connection timed Out.</span>
               </div>
             ) : (
               <button

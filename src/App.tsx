@@ -22,10 +22,10 @@ const DEFAULT_CONFIG: MeetingConfig = {
   layout: 'speaker',
   host: {
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-    fullName: 'Dr. Mohammad Hamad Almenhali',
-    displayName: 'Dr. Almenhali',
-    email: 'dr.almenhali@enterprise.com',
-    jobTitle: 'Chief Executive Officer',
+    fullName: 'Dr. Nadia Hassan Mansouri',
+    displayName: 'Dr. Nadia .M',
+    email: 'dr.nadia.almansouri@enterprise.com',
+    jobTitle: 'Chief Procurement Officer',
     role: 'Host',
   },
   participants: [
@@ -39,9 +39,9 @@ const DEFAULT_CONFIG: MeetingConfig = {
       cameraOn: true,
     },
     {
-      id: 'p_david',
-      name: 'David Chen',
-      email: 'david.c@enterprise.com',
+      id: 'a_kenji',
+      name: 'Kenji Arakawa',
+      email: 'kenji.a@enterprise.com',
       role: 'Attendee',
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
       micOn: true,

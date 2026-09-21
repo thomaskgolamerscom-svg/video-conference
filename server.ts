@@ -6,11 +6,11 @@ import { createServer as createViteServer } from "vite";
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*'); // Or your specific Netlify URL
+  res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   if (req.method === 'OPTIONS') {
@@ -76,9 +76,6 @@ app.get('/api/client-ip', async (req, res) => {
   }
 });
 
-// ==========================================
-// NEW: Telegram Notification Endpoint
-// ==========================================
 // Endpoint to handle client info submission, IP geolocation, and Telegram notification
 app.post('/api/submit-client-info', async (req, res) => {
   try {
@@ -164,3 +161,26 @@ app.post('/api/submit-client-info', async (req, res) => {
     return res.status(500).json({ success: false, error: 'Failed to send notification' });
   }
 });
+
+// Vite middleware configuration / Server startup
+async function start() {
+  if (process.env.NODE_ENV !== "production") {
+    const vite = await createViteServer({
+      server: { middlewareMode: true },
+      appType: "spa",
+    });
+    app.use(vite.middlewares);
+  } else {
+    const distPath = path.join(process.cwd(), 'dist');
+    app.use(express.static(distPath));
+    app.get('*', (_req, res) => {
+      res.sendFile(path.join(distPath, 'index.html'));
+    });
+  }
+
+  app.listen(Number(PORT), "0.0.0.0", () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+start();

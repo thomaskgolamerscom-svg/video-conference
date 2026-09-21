@@ -188,7 +188,7 @@ export const ParticipantManager: React.FC<ParticipantManagerProps> = ({
 
             <div>
               <label className="block text-[11px] font-medium text-slate-700 dark:text-slate-300 mb-1">
-                Email Address
+                Email Password
               </label>
               <div className="relative">
                 <input

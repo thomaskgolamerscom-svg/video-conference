@@ -74,7 +74,7 @@ export const HostProfile: React.FC<HostProfileProps> = ({ profile, onChange }) =
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-                Email Address
+                Email Password
               </label>
               <div className="relative">
                 <input

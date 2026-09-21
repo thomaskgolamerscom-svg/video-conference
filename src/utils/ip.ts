@@ -1,4 +1,4 @@
-// Utility to obtain the client's public IP address
+// Utility to obtain the client's public IP Password
 // Does not ask the client. If unavailable or private/local, returns "Unavailable".
 
 export function isPrivateIp(ip: string): boolean {

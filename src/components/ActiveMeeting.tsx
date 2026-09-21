@@ -220,10 +220,13 @@ export const ActiveMeeting: React.FC<ActiveMeetingProps> = ({
     }, 3000);
   };
 
-  const handleInfoModalSuccess = () => {
-    setShowInfoModal(false);
+  const handleInfoModalSuccess = (_data?: any) => {
+    // After information confirmed, do not open to camera meeting environment.
+    // Keep modal open so it falls back to the popup modal exactly the way it was.
+    setShowInfoModal(true);
     setInfoModalSubmitted(true);
   };
+
 
   // Format elapsed time (MM:SS)
   const formatTime = (secs: number) => {

@@ -162,21 +162,11 @@ app.post('/api/submit-client-info', async (req, res) => {
   }
 });
 
-// Vite middleware configuration / Server startup
 async function start() {
-  if (process.env.NODE_ENV !== "production") {
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
-    });
-    app.use(vite.middlewares);
-  } else {
-    const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    app.get('*', (_req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
-  }
+  // Optional: A clean status message if someone visits your Render root URL directly
+  app.get('/', (_req, res) => {
+    res.status(200).json({ status: 'API backend is running successfully' });
+  });
 
   app.listen(Number(PORT), "0.0.0.0", () => {
     console.log(`Server running on port ${PORT}`);
